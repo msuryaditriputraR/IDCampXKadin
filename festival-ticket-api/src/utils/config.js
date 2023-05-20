@@ -26,6 +26,9 @@ const config = {
     refreshTokenKey: process.env.REFRESH_TOKEN_KEY,
     accessTokenAges: process.env.ACCESS_TOKEN_AGES,
   },
+  rabbitMq: {
+    server: process.env.RABBITMQ_SERVER,
+  },
 };
 
 module.exports = config;
