@@ -1,0 +1,2492 @@
+{
+	"info": {
+		"_postman_id": "1ceca820-9331-4e1b-b392-2d6685d830be",
+		"name": "Festival Ticket API Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12297972"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "[Fail] Register User with Bad Payload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 400 (Bad Request)', () => {",
+									"    pm.expect(pm.response.code).to.equal(400);",
+									"    pm.expect(pm.response.status).to.equal('Bad Request');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									"",
+									"pm.test('the response should have correct response body', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson.status).to.equal('fail');",
+									"    pm.expect(responseJson.message).to.equal('\"name\" is required');",
+									"    pm.expect(responseJson.data).to.eql({});",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Success] Register Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 201 (Created)', () => {",
+									"    pm.expect(pm.response.code).to.equal(201);",
+									"    pm.expect(pm.response.status).to.equal('Created');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									"",
+									"pm.test('the response should have correct response body', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson.status).to.equal('success');",
+									"    pm.expect(responseJson.message).to.equal('user berhasil ditambahkan');",
+									"    pm.expect(responseJson.data.createdUser.id).to.contains('user-');",
+									"    pm.expect(responseJson.data.createdUser.name).to.equal('John Doe');",
+									"    pm.expect(responseJson.data.createdUser.email).to.contains('@example.com');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john_{{$timestamp}}@example.com\",\n    \"password\": \"secret\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[No Test] Register Email with Reserved Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Fail] Register Email with Reserved Email",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 400 (Bad Request)', () => {",
+									"    pm.expect(pm.response.code).to.equal(400);",
+									"    pm.expect(pm.response.status).to.equal('Bad Request');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									"",
+									"pm.test('the response should have correct response body', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson.status).to.equal('fail');",
+									"    pm.expect(responseJson.message).to.equal('email sudah digunakan');",
+									"    pm.expect(responseJson.data).to.eql({});",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentications",
+			"item": [
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "[Fail] Login with Bad Payload",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 400 (Bad Request)', () => {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"    pm.expect(pm.response.status).to.equal('Bad Request');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('fail');",
+											"    pm.expect(responseJson.message).to.equal('\"email\" is required');",
+											"    pm.expect(responseJson.data).to.eql({});",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] Login with Unregistered User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 401 (Bad Request)', () => {",
+											"    pm.expect(pm.response.code).to.equal(401);",
+											"    pm.expect(pm.response.status).to.equal('Unauthorized');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('fail');",
+											"    pm.expect(responseJson.message).to.equal('kredensial yang Anda berikan salah');",
+											"    pm.expect(responseJson.data).to.eql({});",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"admin@dicoding.com\",\n    \"password\": \"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[No Test] Register Email with Reserved",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] Login with Wrong Password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 401 (Bad Request)', () => {",
+											"    pm.expect(pm.response.code).to.equal(401);",
+											"    pm.expect(pm.response.status).to.equal('Unauthorized');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('fail');",
+											"    pm.expect(responseJson.message).to.equal('kredensial yang Anda berikan salah');",
+											"    pm.expect(responseJson.data).to.eql({});",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"wrong_password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Success] Login with True Credential",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 201 (Created)', () => {",
+											"    pm.expect(pm.response.code).to.equal(201);",
+											"    pm.expect(pm.response.status).to.equal('Created');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('success');",
+											"    pm.expect(responseJson.message).to.equal('authentication berhasil');",
+											"    pm.expect(typeof responseJson.data.accessToken).to.equal('string')",
+											"    pm.expect(typeof responseJson.data.refreshToken).to.equal('string');",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Refresh Authentication",
+					"item": [
+						{
+							"name": "[Fail] Refresh Authentication with Bad Payload",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 400 (Bad Request)', () => {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"    pm.expect(pm.response.status).to.equal('Bad Request');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('fail');",
+											"    pm.expect(responseJson.message).to.equal('\"refreshToken\" is required');",
+											"    pm.expect(responseJson.data).to.eql({});",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] Refresh Authentication with Bad Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 401 (Unauthorized)', () => {",
+											"    pm.expect(pm.response.code).to.equal(401);",
+											"    pm.expect(pm.response.status).to.equal('Unauthorized');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('fail');",
+											"    pm.expect(responseJson.message).to.equal('refresh token tidak valid');",
+											"    pm.expect(responseJson.data).to.eql({});",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"this_is_bad_token\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] Refresh Authentication with Wrong Refresh Token Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 401 (Unauthorized)', () => {",
+											"    pm.expect(pm.response.code).to.equal(401);",
+											"    pm.expect(pm.response.status).to.equal('Unauthorized');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('fail');",
+											"    pm.expect(responseJson.message).to.equal('refresh token tidak valid');",
+											"    pm.expect(responseJson.data).to.eql({});",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXItYVNnUzE5VXJMWnlKa2dzQiIsImlhdCI6MTY4MjU3NDQxOX0.0uJh51mTGgbuWhp-zC8gW3vpBAOnm_A5XVgOvCZ3Tw4\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[No Test] Register User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[No Test] Login User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set('johnRefreshToken', responseJson.data.refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Success] Refresh Authentication with Correct Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 200 (OK)', () => {",
+											"    pm.expect(pm.response.code).to.equal(200);",
+											"    pm.expect(pm.response.status).to.equal('OK');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('success');",
+											"    pm.expect(responseJson.message).to.equal('authentication berhasil diperbarui');",
+											"    pm.expect(typeof responseJson.data.accessToken).to.equal('string')",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"{{johnRefreshToken}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"item": [
+						{
+							"name": "[Fail] Logout with Bad Payload",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 400 (Bad Request)', () => {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"    pm.expect(pm.response.status).to.equal('Bad Request');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('fail');",
+											"    pm.expect(responseJson.message).to.equal('\"refreshToken\" is required');",
+											"    pm.expect(responseJson.data).to.eql({});",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] Logout with Bad Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 401 (Unauthorized)', () => {",
+											"    pm.expect(pm.response.code).to.equal(401);",
+											"    pm.expect(pm.response.status).to.equal('Unauthorized');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('fail');",
+											"    pm.expect(responseJson.message).to.equal('refresh token tidak valid');",
+											"    pm.expect(responseJson.data).to.eql({});",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"bad_refresh_token\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] Logout with Wrong Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 401 (Unauthorized)', () => {",
+											"    pm.expect(pm.response.code).to.equal(401);",
+											"    pm.expect(pm.response.status).to.equal('Unauthorized');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('fail');",
+											"    pm.expect(responseJson.message).to.equal('refresh token tidak valid');",
+											"    pm.expect(responseJson.data).to.eql({});",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXItYVNnUzE5VXJMWnlKa2dzQiIsImlhdCI6MTY4MjU3NDQxOX0.0uJh51mTGgbuWhp-zC8gW3vpBAOnm_A5XVgOvCZ3Tw4\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[No Test] Register User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[No Test] Login User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set('johnRefreshToken', responseJson.data.refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Success] Logout with Correct Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 200 (OK)', () => {",
+											"    pm.expect(pm.response.code).to.equal(200);",
+											"    pm.expect(pm.response.status).to.equal('OK');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('success');",
+											"    pm.expect(responseJson.message).to.equal('authentication berhasil dihapus');",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"{{johnRefreshToken}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Festivals",
+			"item": [
+				{
+					"name": "[Success] Get Festivals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 200 (OK)', () => {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"    pm.expect(pm.response.status).to.equal('OK');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									"",
+									"pm.test('the response should have correct response body', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson.status).to.equal('success');",
+									"    pm.expect(responseJson.message).to.equal('list of festivals');",
+									"    pm.expect(responseJson.data.festivals).to.have.length(16);",
+									"",
+									"    pm.collectionVariables.set('festivalId', responseJson.data.festivals[0].id)",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/festivals",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"festivals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Success] Get Festival by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 200 (OK)', () => {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"    pm.expect(pm.response.status).to.equal('OK');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									"",
+									"pm.test('the response should have correct response body', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson.status).to.equal('success');",
+									"    pm.expect(responseJson.message).to.equal(`festival of ${pm.collectionVariables.get('festivalId')}`);",
+									"    pm.expect(responseJson.data.festival.id).equal(pm.collectionVariables.get('festivalId'));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/festivals/{{festivalId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"festivals",
+								"{{festivalId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "Make Booking",
+					"item": [
+						{
+							"name": "[Fail] Booking without Authentication",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 401 (Unauthorized)', () => {",
+											"    pm.expect(pm.response.code).to.equal(401);",
+											"    pm.expect(pm.response.status).to.equal('Unauthorized');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/bookings",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[No Test] Register User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[No Test] Login User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set('johnAccessToken', responseJson.data.accessToken);",
+											"pm.collectionVariables.set('johnRefreshToken', responseJson.data.refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] Booking with Bad Payload",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 400 (Bad Request)', () => {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"    pm.expect(pm.response.status).to.equal('Bad Request');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('fail');",
+											"    pm.expect(responseJson.data).to.eql({});",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{johnAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/bookings",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[No Test] Retrieve Festival",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();",
+											"",
+											"pm.collectionVariables.set('festivalId', responseJson.data.festivals[0].id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/festivals",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"festivals"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] Booking with Wrong Festival Id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 400 (Bad Request)', () => {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"    pm.expect(pm.response.status).to.equal('Bad Request');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('fail');",
+											"    pm.expect(responseJson.data).to.eql({});",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{johnAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"festivalId\": \"fest-123\",\n    \"bookingDate\": \"{{$isoTimestamp}}\",\n    \"quantity\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/bookings",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Success] Booking Festival",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 201 (Created)', () => {",
+											"    pm.expect(pm.response.code).to.equal(201);",
+											"    pm.expect(pm.response.status).to.equal('Created');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('success');",
+											"    pm.expect(responseJson.message).to.equal('konfirmasi booking akan dikirimkan melalui email');",
+											"    pm.expect(typeof responseJson.data.bookingId).to.eql('string');",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{johnAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"festivalId\": \"{{festivalId}}\",\n    \"bookingDate\": \"{{$isoTimestamp}}\",\n    \"quantity\": 17\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/bookings",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "See Booking",
+					"item": [
+						{
+							"name": "[No Test] Booking Festival",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set('bookingId', responseJson.data.bookingId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{johnAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"festivalId\": \"{{festivalId}}\",\n    \"bookingDate\": \"{{$isoTimestamp}}\",\n    \"quantity\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/bookings",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] See Booking without Authentication",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 401 (Unauthorized)', () => {",
+											"    pm.expect(pm.response.code).to.equal(401);",
+											"    pm.expect(pm.response.status).to.equal('Unauthorized');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/bookings/{{bookingId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings",
+										"{{bookingId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] See Someone Booking",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 403 (Forbidden)', () => {",
+											"    pm.expect(pm.response.code).to.equal(403);",
+											"    pm.expect(pm.response.status).to.equal('Forbidden');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{johnAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/bookings/booking-123",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings",
+										"booking-123"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Success] See Booking",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 200 (OK)', () => {",
+											"    pm.expect(pm.response.code).to.equal(200);",
+											"    pm.expect(pm.response.status).to.equal('OK');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('success');",
+											"    pm.expect(responseJson.message).to.equal('booking berhasil ditemukan');",
+											"    pm.expect(responseJson.data.booking.id).to.eql(pm.collectionVariables.get('bookingId'));",
+											"    pm.expect(typeof responseJson.data.booking.user_id).to.eql('string');",
+											"    pm.expect(responseJson.data.booking.festival_id).to.eql(pm.collectionVariables.get('festivalId'))",
+											"    pm.expect(typeof responseJson.data.booking.booking_date).to.eql('string');",
+											"    pm.expect(responseJson.data.booking.quantity).to.eql(2);",
+											"    pm.expect(responseJson.data.booking.status).to.eql(0);",
+											"    pm.expect(typeof responseJson.data.booking.created_at).to.eql('string');",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{johnAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/bookings/{{bookingId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings",
+										"{{bookingId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete Booking",
+					"item": [
+						{
+							"name": "[No Test] Booking Festival",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();",
+											"pm.collectionVariables.set('bookingId', responseJson.data.bookingId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{johnAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"festivalId\": \"{{festivalId}}\",\n    \"bookingDate\": \"{{$isoTimestamp}}\",\n    \"quantity\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/bookings",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] Delete Booking without Authentication",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 401 (Unauthorized)', () => {",
+											"    pm.expect(pm.response.code).to.equal(401);",
+											"    pm.expect(pm.response.status).to.equal('Unauthorized');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/bookings/{{bookingId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings",
+										"{{bookingId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Fail] Delete Someone Booking",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 403 (Forbidden)', () => {",
+											"    pm.expect(pm.response.code).to.equal(403);",
+											"    pm.expect(pm.response.status).to.equal('Forbidden');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{johnAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/bookings/booking-123",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings",
+										"booking-123"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Success] Delete Booking",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('it should response with 200 (OK)', () => {",
+											"    pm.expect(pm.response.code).to.equal(200);",
+											"    pm.expect(pm.response.status).to.equal('OK');",
+											"});",
+											"",
+											"pm.test('the Content-Type should have application/json value', () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+											"});",
+											"",
+											"pm.test('the response should have correct response body', () => {",
+											"    const responseJson = pm.response.json();",
+											"",
+											"    pm.expect(responseJson.status).to.equal('success');",
+											"    pm.expect(responseJson.message).to.equal('booking berhasil dihapus');",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{johnAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/bookings/{{bookingId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings",
+										"{{bookingId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Uploads",
+			"item": [
+				{
+					"name": "[Fail] Patch User ID Card with No Authentication",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 401 (Unauthorized)', () => {",
+									"    pm.expect(pm.response.code).to.equal(401);",
+									"    pm.expect(pm.response.status).to.equal('Unauthorized');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/me/id-cards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"me",
+								"id-cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[No Test] Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[No Test] Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"pm.collectionVariables.set('johnAccessToken', responseJson.data.accessToken);",
+									"pm.collectionVariables.set('johnRefreshToken', responseJson.data.refreshToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/authentications",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authentications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Fail] Patch User ID Card with Bad Payload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 400 (Bad Request)', () => {",
+									"    pm.expect(pm.response.code).to.equal(400);",
+									"    pm.expect(pm.response.status).to.equal('Bad Request');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									"",
+									"pm.test('the response should have correct response body', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson.status).to.equal('fail');",
+									"    pm.expect(responseJson.message).to.contains('content-type');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{johnAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/dimas/Pictures/fail-file-upload.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/me/id-cards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"me",
+								"id-cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Success] Patch User ID Card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 200 (OK)', () => {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"    pm.expect(pm.response.status).to.equal('OK');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									"",
+									"pm.test('the response should have correct response body', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson.status).to.equal('success');",
+									"    pm.expect(responseJson.message).to.equal('id card berhasil diperbarui');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{johnAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/dimas/Pictures/success-file-upload.webp"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/me/id-cards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"me",
+								"id-cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Success] Get User ID Card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 200 (OK)', () => {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"    pm.expect(pm.response.status).to.equal('OK');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have image/** value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('image');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{johnAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/me/id-cards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"me",
+								"id-cards"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Server Caching",
+			"item": [
+				{
+					"name": "[No Test] Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[No Test] Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"pm.collectionVariables.set('johnAccessToken', responseJson.data.accessToken);",
+									"pm.collectionVariables.set('johnRefreshToken', responseJson.data.refreshToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"secret\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/authentications",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authentications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[No Test] Booking Festival",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"pm.collectionVariables.set('bookingId', responseJson.data.bookingId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{johnAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"festivalId\": \"{{festivalId}}\",\n    \"bookingDate\": \"{{$isoTimestamp}}\",\n    \"quantity\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Success] See Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 200 (OK)', () => {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"    pm.expect(pm.response.status).to.equal('OK');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									"",
+									"pm.test('the response should have correct headers', () => {",
+									"    pm.expect(pm.response.headers.get('x-data-source')).to.eql('database');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{johnAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/{{bookingId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Success] See Booking (again)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 200 (OK)', () => {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"    pm.expect(pm.response.status).to.equal('OK');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									"",
+									"pm.test('the response should have correct headers', () => {",
+									"    pm.expect(pm.response.headers.get('x-data-source')).to.eql('cache');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{johnAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/{{bookingId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[No Test] Delete Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{johnAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/{{bookingId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Success] See Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 200 (OK)', () => {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"    pm.expect(pm.response.status).to.equal('OK');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									"",
+									"pm.test('the response should have correct headers', () => {",
+									"    pm.expect(pm.response.headers.get('x-data-source')).to.eql('database');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{johnAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/{{bookingId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Success] See Booking (again)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 200 (OK)', () => {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"    pm.expect(pm.response.status).to.equal('OK');",
+									"});",
+									"",
+									"pm.test('the Content-Type should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');",
+									"});",
+									"",
+									"pm.test('the response should have correct headers', () => {",
+									"    pm.expect(pm.response.headers.get('x-data-source')).to.eql('cache');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{johnAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/{{bookingId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:9000",
+			"type": "string"
+		},
+		{
+			"key": "johnRefreshToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "johnAccessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "festivalId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bookingId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
