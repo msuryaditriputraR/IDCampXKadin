@@ -9,12 +9,18 @@ const AuthenticationsService = require('../services/postgres/AuthenticationsServ
 const JwtTokenManager = require('../tokenize/JwtTokenManager');
 const festivals = require('../api/festivals');
 const FestivalsService = require('../services/postgres/FestivalsService');
+const BookingService = require('../services/postgres/BookingsService');
+const QueueService = require('../services/rabbitmq/QueueService');
+const bookings = require('../api/bookings');
 
 async function createServer() {
   // create services that will be used by the plugin
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
   const festivalsService = new FestivalsService();
+
+  const bookingsService = new BookingService();
+  const queueService = new QueueService();
 
   // create HTTP server using hapi
   const server = Hapi.server({
@@ -73,6 +79,14 @@ async function createServer() {
         festivalsService,
       },
     },
+    {
+      plugin: bookings,
+      options: {
+        bookingsService,
+        festivalsService,
+        queueService,
+      },
+    },
   ]);
 
   // intercept the response before it is sent to the client
@@ -85,11 +99,13 @@ async function createServer() {
 
     // if the response is an instance of ClientError, then we will send the error response
     if (response instanceof ClientError) {
-      return h.response({
-        status: 'fail',
-        message: response.message,
-        data: {},
-      }).code(response.statusCode);
+      return h
+        .response({
+          status: 'fail',
+          message: response.message,
+          data: {},
+        })
+        .code(response.statusCode);
     }
 
     // otherwise, return the response without any change
