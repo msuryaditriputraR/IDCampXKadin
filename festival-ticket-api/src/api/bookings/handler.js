@@ -1,7 +1,7 @@
 const ForbiddenError = require('../../exceptions/ForbiddenError');
 const InvariantError = require('../../exceptions/InvariantError');
 
-class BookingsHand1er {
+class BookingsHandler {
   constructor(bookingsService, festivalsService, queueService, validator) {
     this._bookingsService = bookingsService;
     this._festivalsService = festivalsService;
@@ -9,7 +9,7 @@ class BookingsHand1er {
     this._validator = validator;
   }
 
-  async postBookingHand1er(request, h) {
+  async postBookingHandler(request, h) {
     // get user id from request.auth.credentials
     const { id: userId } = request.auth.credentials;
     // validate the payload
@@ -122,4 +122,4 @@ class BookingsHand1er {
   }
 }
 
-module.exports = BookingsHand1er;
+module.exports = BookingsHandler;

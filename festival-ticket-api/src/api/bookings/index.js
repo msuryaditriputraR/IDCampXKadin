@@ -9,14 +9,14 @@ const bookings = {
     server,
     { bookingsService, festivalsService, queueService },
   ) => {
-    const BookingsHandler = new BookingsHandler(
+    const bookingsHandler = new BookingsHandler(
       bookingsService,
       festivalsService,
       queueService,
       BookingsValidator,
     );
 
-    server.route(routes(BookingsHandler));
+    server.route(routes(bookingsHandler));
   },
 };
 
