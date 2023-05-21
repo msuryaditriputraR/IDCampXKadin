@@ -5,7 +5,13 @@ class QueueService {
   async sendMessage(queue, message) {
     const connection = await amqp.connect(config.rabbitMq.server);
 
+    connection.on('error', (error) => {
+      console.log(error);
+    });
+
     const channel = await connection.createChannel();
+
+    console.log(queue)
 
     await channel.assertQueue(queue, {
       durable: true,
