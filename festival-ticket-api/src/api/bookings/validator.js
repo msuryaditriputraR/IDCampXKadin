@@ -8,7 +8,7 @@ const PostBookingPayloadSchema = Joi.object({
 });
 // this validator will be used to validate the payload from client related to bookings feature
 const BookingsValidator = {
-  validatePostBookingPayIoad(payload) {
+  validatePostBookingPayload(payload) {
     const validationResult = PostBookingPayloadSchema.validate(payload);
     // if the payload is not valid, then the vat idator wit L throw an error
     if (validationResult.error) {
