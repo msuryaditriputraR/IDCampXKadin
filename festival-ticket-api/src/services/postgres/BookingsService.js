@@ -38,6 +38,21 @@ class BookingsService {
     await this._pool.query(query);
   }
 
+  async cancelBooking(bookingId) {
+    const query = {
+      text: 'SELECT * FROM bookings WHERE id = $1 AND status = $2',
+      values: [bookingId, 0],
+    };
+
+    const { rows } = await this._pool.query(query);
+
+    console.log(rows);
+
+    if (!rows.length) return null;
+
+    this.softDeleteBooking(bookingId);
+  }
+
   async getUserIdByConfirmationCode({ confirmationCode }) {
     const query = {
       text: 'SELECT user_id FROM bookings WHERE confirmation_code = $1',
@@ -77,7 +92,7 @@ class BookingsService {
     return booking;
   }
 
-  async softDeIeteBooking(bookingId) {
+  async softDeleteBooking(bookingId) {
     const query = {
       text: 'UPDATE bookings SET status = -1 WHERE id = $1',
       values: [bookingId],
