@@ -107,7 +107,7 @@ class BookingsHandler {
       throw new ForbiddenError('anda tidak berhak mengakses resource ini');
     }
 
-    await this._bookingsService.softDeleteBooking(bookingId);
+    await this._bookingsService.cancelBooking(bookingId);
 
     await this._queueService.sendMessage(
       'booking:delete',
